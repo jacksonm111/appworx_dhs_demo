@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="3.0.1-dev-20150306-5afe4d1" sequence="1" timestamp="1445519414923" analysisTimestamp="1445519402188" release="">
+  <Project projectName="dhsdemo">
+    <Jar>C:\Users\cmagee5\repos\dhsdemo\bin</Jar>
+    <AuxClasspathEntry>C:\Users\cmagee5\repos\dhsdemo\bin</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\tps\eclipse-jee-mars-1-win32-x86_64\eclipse\plugins\org.junit_4.12.0.v201504281640\junit.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\tps\eclipse-jee-mars-1-win32-x86_64\eclipse\plugins\org.hamcrest.core_1.3.0.v201303031735.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Program Files\Java\jre1.8.0_60\lib\rt.jar</AuxClasspathEntry>
+    <SrcDir>C:\Users\cmagee5\repos\dhsdemo\src\main\java</SrcDir>
+    <SrcDir>C:\Users\cmagee5\repos\dhsdemo\src\integration-test\java</SrcDir>
+    <SrcDir>C:\Users\cmagee5\repos\dhsdemo\src\test\java</SrcDir>
+    <Cloud id="edu.umd.cs.findbugs.cloud.doNothingCloud" online="false"></Cloud>
+  </Project>
+  <BugInstance type="BC_IMPOSSIBLE_CAST" priority="1" rank="9" abbrev="BC" category="CORRECTNESS" first="1">
+    <Class classname="calc.CalculatorService">
+      <SourceLine classname="calc.CalculatorService" sourcefile="CalculatorService.java" sourcepath="calc/CalculatorService.java"/>
+    </Class>
+    <Method classname="calc.CalculatorService" name="bcImpossibleCastWRONG" signature="()V" isStatic="true">
+      <SourceLine classname="calc.CalculatorService" start="97" end="100" startBytecode="0" endBytecode="15" sourcefile="CalculatorService.java" sourcepath="calc/CalculatorService.java"/>
+    </Method>
+    <Type descriptor="Ljava/lang/Double;" role="TYPE_FOUND">
+      <SourceLine classname="java.lang.Double"/>
+    </Type>
+    <Type descriptor="Ljava/lang/Long;" role="TYPE_EXPECTED">
+      <SourceLine classname="java.lang.Long"/>
+    </Type>
+    <LocalVariable name="doubleValue" register="0" pc="5" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <SourceLine classname="calc.CalculatorService" start="98" end="98" startBytecode="6" endBytecode="6" sourcefile="CalculatorService.java" sourcepath="calc/CalculatorService.java"/>
+  </BugInstance>
+  <BugInstance type="MS_PKGPROTECT" priority="2" rank="18" abbrev="MS" category="MALICIOUS_CODE" first="1">
+    <Class classname="calc.CalculatorUIT">
+      <SourceLine classname="calc.CalculatorUIT" sourcefile="CalculatorUIT.java" sourcepath="calc/CalculatorUIT.java"/>
+    </Class>
+    <Field classname="calc.CalculatorUIT" name="NodeURL" signature="Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="calc.CalculatorUIT" sourcefile="CalculatorUIT.java" sourcepath="calc/CalculatorUIT.java"/>
+    </Field>
+    <SourceLine classname="calc.CalculatorUIT" start="27" end="27" startBytecode="2" endBytecode="2" sourcefile="CalculatorUIT.java" sourcepath="calc/CalculatorUIT.java"/>
+  </BugInstance>
+  <BugInstance type="MS_PKGPROTECT" priority="2" rank="18" abbrev="MS" category="MALICIOUS_CODE" first="1">
+    <Class classname="calc.CalculatorUIT">
+      <SourceLine classname="calc.CalculatorUIT" sourcefile="CalculatorUIT.java" sourcepath="calc/CalculatorUIT.java"/>
+    </Class>
+    <Field classname="calc.CalculatorUIT" name="TargetURL" signature="Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="calc.CalculatorUIT" sourcefile="CalculatorUIT.java" sourcepath="calc/CalculatorUIT.java"/>
+    </Field>
+    <SourceLine classname="calc.CalculatorUIT" start="28" end="28" startBytecode="7" endBytecode="7" sourcefile="CalculatorUIT.java" sourcepath="calc/CalculatorUIT.java"/>
+  </BugInstance>
+  <BugInstance type="NM_FIELD_NAMING_CONVENTION" priority="2" rank="16" abbrev="Nm" category="BAD_PRACTICE" first="1">
+    <Class classname="calc.CalculatorUIT">
+      <SourceLine classname="calc.CalculatorUIT" sourcefile="CalculatorUIT.java" sourcepath="calc/CalculatorUIT.java"/>
+    </Class>
+    <Field classname="calc.CalculatorUIT" name="NodeURL" signature="Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="calc.CalculatorUIT" start="27" end="27" startBytecode="0" endBytecode="0" sourcefile="CalculatorUIT.java" sourcepath="calc/CalculatorUIT.java"/>
+    </Field>
+  </BugInstance>
+  <BugInstance type="NM_FIELD_NAMING_CONVENTION" priority="2" rank="16" abbrev="Nm" category="BAD_PRACTICE" first="1">
+    <Class classname="calc.CalculatorUIT">
+      <SourceLine classname="calc.CalculatorUIT" sourcefile="CalculatorUIT.java" sourcepath="calc/CalculatorUIT.java"/>
+    </Class>
+    <Field classname="calc.CalculatorUIT" name="TargetURL" signature="Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="calc.CalculatorUIT" start="28" end="28" startBytecode="0" endBytecode="0" sourcefile="CalculatorUIT.java" sourcepath="calc/CalculatorUIT.java"/>
+    </Field>
+  </BugInstance>
+  <Errors errors="0" missingClasses="0"></Errors>
+  <FindBugsSummary timestamp="Thu, 22 Oct 2015 09:06:02 -0400" total_classes="5" referenced_classes="55" total_bugs="5" total_size="109" num_packages="1" java_version="1.8.0_60" vm_version="25.60-b23" cpu_seconds="52.51" clock_seconds="485.45" peak_mbytes="593.73" alloc_mbytes="910.50" gc_seconds="4.73" priority_2="4" priority_1="1">
+    <PackageStats package="calc" total_bugs="5" total_types="5" total_size="109" priority_2="4" priority_1="1">
+      <ClassStats class="calc.Calculator" sourceFile="Calculator.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="calc.CalculatorService" sourceFile="CalculatorService.java" interface="false" size="21" bugs="1" priority_1="1"/>
+      <ClassStats class="calc.CalculatorTest" sourceFile="CalculatorTest.java" interface="false" size="17" bugs="0"/>
+      <ClassStats class="calc.CalculatorUIT" sourceFile="CalculatorUIT.java" interface="false" size="54" bugs="4" priority_2="4"/>
+      <ClassStats class="calc.NegativeNumberException" sourceFile="NegativeNumberException.java" interface="false" size="8" bugs="0"/>
+    </PackageStats>
+    <FindBugsProfile>
+      <ClassProfile name="de.tobject.findbugs.builder.FindBugs2Eclipse" totalMilliseconds="457" invocations="2" avgMicrosecondsPerInvocation="228751" maxMicrosecondsPerInvocation="269047" standardDeviationMircosecondsPerInvocation="40298"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassInfoAnalysisEngine" totalMilliseconds="325" invocations="512" avgMicrosecondsPerInvocation="635" maxMicrosecondsPerInvocation="75965" standardDeviationMircosecondsPerInvocation="3529"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassDataAnalysisEngine" totalMilliseconds="175" invocations="517" avgMicrosecondsPerInvocation="339" maxMicrosecondsPerInvocation="4267" standardDeviationMircosecondsPerInvocation="512"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FieldItemSummary" totalMilliseconds="145" invocations="55" avgMicrosecondsPerInvocation="2636" maxMicrosecondsPerInvocation="17700" standardDeviationMircosecondsPerInvocation="4529"/>
+      <ClassProfile name="edu.umd.cs.findbugs.OpcodeStack$JumpInfoFactory" totalMilliseconds="103" invocations="154" avgMicrosecondsPerInvocation="669" maxMicrosecondsPerInvocation="7244" standardDeviationMircosecondsPerInvocation="968"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNoSideEffectMethods" totalMilliseconds="96" invocations="55" avgMicrosecondsPerInvocation="1760" maxMicrosecondsPerInvocation="20313" standardDeviationMircosecondsPerInvocation="3544"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.MethodGenFactory" totalMilliseconds="50" invocations="20" avgMicrosecondsPerInvocation="2505" maxMicrosecondsPerInvocation="42909" standardDeviationMircosecondsPerInvocation="9281"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.JavaClassAnalysisEngine" totalMilliseconds="48" invocations="89" avgMicrosecondsPerInvocation="549" maxMicrosecondsPerInvocation="23184" standardDeviationMircosecondsPerInvocation="2503"/>
+      <ClassProfile name="edu.umd.cs.findbugs.ba.npe.NullDerefAndRedundantComparisonFinder" totalMilliseconds="44" invocations="20" avgMicrosecondsPerInvocation="2233" maxMicrosecondsPerInvocation="31071" standardDeviationMircosecondsPerInvocation="6717"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.NoteDirectlyRelevantTypeQualifiers" totalMilliseconds="42" invocations="55" avgMicrosecondsPerInvocation="768" maxMicrosecondsPerInvocation="7223" standardDeviationMircosecondsPerInvocation="1342"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.IsNullValueDataflowFactory" totalMilliseconds="40" invocations="20" avgMicrosecondsPerInvocation="2010" maxMicrosecondsPerInvocation="25627" standardDeviationMircosecondsPerInvocation="5492"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.TypeDataflowFactory" totalMilliseconds="35" invocations="20" avgMicrosecondsPerInvocation="1786" maxMicrosecondsPerInvocation="10687" standardDeviationMircosecondsPerInvocation="2947"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.ValueNumberDataflowFactory" totalMilliseconds="34" invocations="21" avgMicrosecondsPerInvocation="1655" maxMicrosecondsPerInvocation="16110" standardDeviationMircosecondsPerInvocation="3615"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.OverridingEqualsNotSymmetrical" totalMilliseconds="34" invocations="55" avgMicrosecondsPerInvocation="627" maxMicrosecondsPerInvocation="9233" standardDeviationMircosecondsPerInvocation="1472"/>
+    </FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History>
+    <AppVersion sequence="0" timestamp="1445519414919" release="" codeSize="0" numClasses="0"/>
+  </History>
+</BugCollection>

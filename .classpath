@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/integration-test/java"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Selenium/selenium-server-standalone-2.47.1.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/Selenium Report/lib/sqlite-jdbc-3.8.11.1.jar"/>
+	<classpathentry kind="lib" path="C:/Selenium/Selenium Report/extentreports-java-2.10.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

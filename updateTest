@@ -1,0 +1,149 @@
+#!/usr/bin/env python
+# capture commit information and repository and send to message (etcd) server
+# TODO need to add support for Windows
+
+import sys, syslog, os, re, subprocess
+#from subprocess import check_output
+
+def group(lst, n):
+  for i in range(0, len(lst), n):
+    val = lst[i:i+n]
+    if len(val) == n:
+      yield tuple(val)
+
+def shell_source(script):
+  """Sometime you want to emulate the action of "source" in bash,
+  settings some environment variables. Here is a way to do it."""
+  import subprocess, os
+  pipe = subprocess.Popen(". %s; env" % script, stdout=subprocess.PIPE, shell=True)
+  output = pipe.communicate()[0]
+  env = dict((line.split("=", 1) for line in output.splitlines()))
+  os.environ.update(env)
+
+shell_source('/scm/appworks.source')
+
+#try:
+#  # need environment on remote repository
+#  srcCmd = "source /scm/appworks.source"
+#  srcCmdProc = subprocess.Popen(srcCmd.split(), shell=True, stdout=subprocess.PIPE)
+#except subprocess.CalledProcessError as e:
+#  calledProcErrLogMsg = " START exception in source command call with code: " + e.returncode
+#  syslog.syslog(syslog.LOG_INFO, calledProcErrLogMsg)
+#  print calledProcErrLogMsg
+
+# get name of script
+hookName= os.path.basename(sys.argv[0])
+
+#name of hook for log
+#hookTag=str(os.environ['REPO_TYPE'] + r" " + hookName)
+hookTag = "git server " + hookName
+
+#starts log
+print "'%s' START" % hookTag
+syslog.syslog(syslog.LOG_INFO, hookTag + " START")
+
+#get ALM_ID text required for commit
+almText = os.environ['ALM_ID']
+#almText = "JIRAID::"
+
+#format for ALM comment
+#almRegexText = re.escape(almText) + os.environ['ALM_REQ_REGEX']
+almRegexText = re.escape(almText) + "[ ]*[1-9][0-9]*([ ]*,[ ]*[1-9][0-9]*)*[ ]*"
+
+almInfo = hookTag + " ALM ID:" + almText + ", ALM_REQ_REGEX:" + almRegexText
+print almInfo
+syslog.syslog(syslog.LOG_INFO, almInfo)
+
+# commit IDs past for range of commits
+oldrev = sys.argv[2]
+newrev = sys.argv[3]      
+
+revMsg = hookTag + " revsion at head: " + oldrev + " , last revision in update: " + newrev
+print revMsg
+syslog.syslog(syslog.LOG_INFO, revMsg)
+
+# use new revision to retrieve branch in repository
+gitBranchCmd = '/usr/bin/git branch --contains ' + newrev
+gitBranchProc = subprocess.Popen(gitBranchCmd.split(),stdout=subprocess.PIPE)
+gitOutput = gitBranchProc.communicate()[0]
+branch = re.sub(r'* ', "", gitOutput)
+print "Branch:  " + branch
+#branch = (re.search(r'* (.+?)$', asteriskBranch)).group(1)
+
+# TODO add handling for first commit when previous commit DNE
+
+# retrieve all needed commit  
+gitShowHeadCommitTstampCommentCmd = '/usr/bin/git rev-list --date-order --reverse --pretty=format:"%ct-%s" ' + oldrev + '..' + newrev
+gitShowProc = subprocess.Popen(gitShowHeadCommitTstampCommentCmd.split(),stdout=subprocess.PIPE)
+outputlines = filter(lambda x:len(x)>0,(line.strip() for line in gitShowProc.stdout))
+commitTimeAlmTextTuples = list(group(outputlines,2))
+
+#loop over list
+for commitTimeIdTuple in commitTimeAlmTextTuples:
+  cmtID = (re.search(r'commit (.+?)$', commitTimeIdTuple[0])).group(1)
+  cmtIdLogMsg = hookTag + ' commit ID: '+cmtID
+  print cmtIdLogMsg
+  syslog.syslog(syslog.LOG_INFO, cmtIdLogMsg)
+  cmtTstamp = (re.search(r'"(.+?)-', commitTimeIdTuple[1])).group(1)
+  cmtComment = (re.search(r'-(.+?)"', commitTimeIdTuple[1])).group(1)
+
+  #TODO remove temp log statements
+  cmtTstampCommentMsg = hookTag + " cmtTstamp: " + cmtTstamp + " , cmtComment: " + cmtComment
+  syslog.syslog(syslog.LOG_INFO, cmtTstampCommentMsg)
+  
+  #check commit message for validity
+  if re.search(almRegexText, cmtComment, re.IGNORECASE) is None:
+    nonConformLogMsg= hookTag + " nonconforming message to ALM_ID and ALM_REQ_REGEX format " + cmtComment
+    print nonConformLogMsg
+    syslog.syslog(syslog.LOG_INFO, nonConformLogMsg)
+  else:
+    conformLogMsg = hookTag + " ALM comment text conforms to format: " + cmtComment
+    print conformLogMsg
+    syslog.syslog(syslog.LOG_INFO, conformLogMsg)
+
+    #retrieve name of repository folder/directory
+    repoPathName = os.getcwd()
+
+    #strip off path from filename
+    repoFilename = os.path.basename(repoPathName)
+    
+    #strip off extension from folder name
+    repoName = repoFilename.rsplit( ".", 1 )[ 0 ]
+    print repoName
+    #repoName = sys.argv[1]
+    
+    #msgSrv = os.environ['APPWRX_MSG_SRV']
+    msgSrv = "54.67.92.255"
+    messageUrl = 'http://' + msgSrv + ':4001/v2/keys/' + repoName + '/' +  branch + '/' + cmtID + '/git/init'
+
+    almIDregex = almText + r'(.+?)$'
+    almID = (re.search(almIDregex, cmtComment)).group(1)
+    almIdNoSpace = re.sub(" ", "", almID)
+    almIdDblColon = re.sub(",", "::", almIdNoSpace)
+
+    curlCmd = '/usr/bin/curl -L ' + messageUrl +' -XPUT -d value=' + almIdDblColon
+    curlCmdLogMsg= hookTag + " published message for server: " + curlCmd 
+    syslog.syslog(syslog.LOG_INFO, curlCmdLogMsg)
+    print curlCmdLogMsg
+    try:
+      gitCurlProc = subprocess.Popen(curlCmd.split(),stdout=subprocess.PIPE)
+      curlOutput = gitCurlProc.communicate()[0]
+
+      # output in matched format confirms message sent. returncode is not reliable 
+      curlOutputMatchText = '{"action":"(create|set)","node":{"key":"'
+      if re.search(curlOutputMatchText, curlOutput) is None:
+        curlCmdBadOutputLogMsg= hookTag + " bad curl output: " + curlOutput 
+        syslog.syslog(syslog.LOG_INFO, curlCmdBadOutputLogMsg)
+        print curlCmdBadOutputLogMsg
+      else:
+        curlCmdGoodOutputLogMsg= hookTag + " good curl output: " + curlOutput 
+        syslog.syslog(syslog.LOG_INFO, curlCmdGoodOutputLogMsg)          
+        print curlCmdGoodOutputLogMsg
+    except subprocess.CalledProcessError as e:
+      calledProcErrLogMsg = hookTag + " exception in curl command call with code: " + e.returncode
+      syslog.syslog(syslog.LOG_INFO, calledProcErrLogMsg)
+      print calledProcErrLogMsg
+
+finishLogMsg = hookTag + " FINISH"
+syslog.syslog(syslog.LOG_INFO, finishLogMsg)
+print finishLogMsg

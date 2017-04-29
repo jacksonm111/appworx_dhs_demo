@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>GIT_REPO</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>GIT_BRANCH</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>GIT_COMMIT_ID</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <EnvInjectJobProperty plugin="envinject@1.92.1">
+      <info>
+        <loadFilesFromMaster>false</loadFilesFromMaster>
+      </info>
+      <on>true</on>
+      <keepJenkinsSystemVariables>true</keepJenkinsSystemVariables>
+      <keepBuildVariables>true</keepBuildVariables>
+      <overrideBuildParameters>true</overrideBuildParameters>
+      <contributors/>
+    </EnvInjectJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>scp -i ~/.ssh/id_rsa /var/lib/jenkins/war_files/$GIT_REPO-$GIT_BRANCH-$GIT_COMMIT_ID/*.war 192.168.33.18:/home/vagrant/jboss-as-7.1.1.Final/standalone/deployments
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder plugin="groovy-postbuild@2.3.1">
+      <script plugin="script-security@1.17">
+        <script>def result = manager.build.result
+def build_number = manager.build.number
+def env = manager.build.getEnvironment(manager.listener)
+def git_repo = env[&apos;GIT_REPO&apos;]
+def git_branch = env[&apos;GIT_BRANCH&apos;]
+def git_commit_id= env[&apos;GIT_COMMIT_ID&apos;]
+def jenkins_home= env[&apos;JENKINS_HOME&apos;]
+def job_name= env[&apos;JOB_NAME&apos;]
+def build_id = env[&apos;BUILD_ID&apos;]
+
+&quot;python /var/lib/jenkins/jobHelpers/postBuild.py $git_repo $git_branch $git_commit_id $jenkins_home $job_name $build_id $result&quot;.execute()</script>
+        <sandbox>false</sandbox>
+      </script>
+      <behavior>1</behavior>
+      <runForMatrixParent>false</runForMatrixParent>
+    </org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder>
+  </publishers>
+  <buildWrappers/>
+</project>
