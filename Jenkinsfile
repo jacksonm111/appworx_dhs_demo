@@ -2,11 +2,12 @@
  * Jenkinsfile
  */
  
- String git_url = 'git@10.0.0.25:/var/opt/gitlab/git-data/repositories/Phil.Hartman/appworx_dhs_demo.git'
+// String git_url = 'git@10.0.0.25:/var/opt/gitlab/git-data/repositories/Phil.Hartman/appworx_dhs_demo.git'
 // String git_url = 'git@ec2-52-14-108-19.us-east-2.compute.amazonaws.com:/var/opt/gitlab/git-data/repositories/root/appworx_dhs_demo.git'
 // String git_url = 'http://ec2-52-14-108-19.us-east-2.compute.amazonaws.com/Phil.Hartman/appworx_dhs_demo_phil.git'
 // String git_url = 'git@ec2-52-14-108-19.us-east-2.compute.amazonaws.com:Phil.Hartman/appworx_dhs_demo_phil.git'
 // String git_url = 'git@ec2-54-145-168-114.compute-1.amazonaws.com:Phil.Hartman/appworx_dhs_demo.git' //TODO: not working??
+  String git_url = 'https://github.com/jacksonm111-org/appworx_dhs_demo'
 
 def deployIntegration(war) 
 {
