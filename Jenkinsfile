@@ -22,6 +22,11 @@ def deployProduction(war)
 
 node('slave-pool-1')
 {
+    sh 'env > env.txt'
+    readFile('env.txt').split("\r?\n").each {
+        println it
+    }
+
 	def mvnHome = tool 'M3'
 	GIT_BRANCH="master"
 	//sh "echo ${GIT_BRANCH}"
