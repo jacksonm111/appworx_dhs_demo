@@ -23,8 +23,11 @@ def deployProduction(war)
 node('slave-pool-1')
 {
     sh 'env > env.txt'
-    readFile('env.txt').split("\r?\n").each {
-        println it
+    def s = readFile('env.txt')
+	def s2 = s.split("\r?\n")
+	for(i=0; i<s2.length; i++)
+	{
+        println a2[i]
     }
 
 	def mvnHome = tool 'M3'
