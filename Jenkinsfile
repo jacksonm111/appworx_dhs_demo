@@ -10,12 +10,12 @@ String git_url = 'https://github.com/jacksonm111-org/appworx_dhs_demo.git'
 
 def deployIntegration(war) 
 {
-   sh "scp '${war}' /home/ubuntu/jboss-as-7.1.1.Final/standalone/deployments"
+   sh "scp '${war}' /home/ubuntu/intg/jboss-as-7.1.1.Final/standalone/deployments"
 }
 
 def deployProduction(war) 
 {
-  sh "scp '${war}' /home/ubuntu/jboss-as-7.1.1.Final/standalone/deployments"
+  sh "scp '${war}' /home/ubuntu/prod/jboss-as-7.1.1.Final/standalone/deployments"
 }
 
 node('slave-pool-1')
