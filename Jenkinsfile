@@ -29,6 +29,7 @@ node('slave-pool-1')
   }
 
   def mvnHome = tool 'M3'
+  sh "echo mvnHome=${mvnHome}
   GIT_BRANCH="master"
   //sh "echo ${GIT_BRANCH}"
   
