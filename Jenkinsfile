@@ -59,7 +59,7 @@ node('slave-pool-1')
   //Mark the code integration 'stage'
   stage('Deploying to Integration')
   {
-     deployIntegration "/var/lib/jenkins/jobs/CalculatorDemoPipeline/workspace/target/Calculator.war"
+     deployIntegration "target/Calculator.war"
   }
 
   stage('Selenium Tests')
