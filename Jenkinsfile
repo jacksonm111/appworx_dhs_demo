@@ -10,12 +10,12 @@ String git_url = 'https://github.com/jacksonm111-org/appworx_dhs_demo.git'
 
 def deployIntegration(war) 
 {
-   sh "scp '${war}' jenkins@10.0.1.191:/home/ubuntu/jboss-as-7.1.1.Final/standalone/deployments"
+   sh "scp '${war}' /home/ubuntu/jboss-as-7.1.1.Final/standalone/deployments"
 }
 
 def deployProduction(war) 
 {
-  sh "scp '${war}' jenkins@10.0.1.193:/home/ubuntu/jboss-as-7.1.1.Final/standalone/deployments"
+  sh "scp '${war}' /home/ubuntu/jboss-as-7.1.1.Final/standalone/deployments"
 }
 
 node('slave-pool-1')
@@ -81,7 +81,7 @@ node('slave-pool-1')
   // mark the code deployment 'stage'
   stage('Deployment to Production')
   {
-      deployProduction "/var/lib/jenkins/jobs/CalculatorDemoPipeline/workspace/target/Calculator.war"
+      deployProduction "target/Calculator.war"
   }
 
 } //end node
