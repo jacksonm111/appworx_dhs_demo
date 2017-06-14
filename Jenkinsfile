@@ -18,7 +18,7 @@ pipeline {
     LABEL_UPPER='label-prod'
     LABEL_LOWER='label-intg'
     LABEL_MASTER='master'
-    CREDS="aaf5671dd2b237490fe16bea20d552fefc755a0c"
+ //   CREDS="aaf5671dd2b237490fe16bea20d552fefc755a0c"
     GIT_BRANCH="master"
     mvnHome = tool ('M3')
   }
@@ -53,8 +53,8 @@ pipeline {
 
         /* Get some code from a git server */
         /*sh "ssh-agent bash -c 'ssh-add ~/.ssh/jenkins_key; git clone git@192.168.17.14:root/Demo.git'"*/
-        checkout scm: [$class: 'GitSCM', branches: [[name: "*/${env.GIT_BRANCH}"]], userRemoteConfigs: [[credentialsId: "${env.CREDS}", url: "${env.git_url}"]]]
-
+//        checkout scm: [$class: 'GitSCM', branches: [[name: "*/${env.GIT_BRANCH}"]], userRemoteConfigs: [[credentialsId: "${env.CREDS}", url: "${env.git_url}"]]]
+        checkout scm
         stash 's1'
       }
     }
