@@ -87,7 +87,7 @@ pipeline {
     stage('Deploy to Integration')
     {
       steps {
-        sh "scp 'target/Calculator.war' jenkinsa@ncidt-d013-v.nci.nih.gov:/home/ubuntu/intg/jboss-as-7.1.1.Final/standalone/deployments"
+        sh "scp 'target/Calculator.war' /home/ubuntu/intg/jboss-as-7.1.1.Final/standalone/deployments"
       }
     }
 
@@ -120,8 +120,8 @@ pipeline {
     {
       agent { label "master" }
       steps {
-        timeout(time: 1, unit: 'MINUTES') {
-          input message: 'Deploy to prod?'/*, submitter: 'hartmanp'*//*uncomment once authentication enabled*/
+        timeout(time: 1, unit: 'MINUTE') {
+          input message: 'Deploy to prod?'/*, submitter: 'admin'*//*uncomment once authentication enabled*/
         }
       }
     }
@@ -131,7 +131,7 @@ pipeline {
     stage('Deployment to Production')
     {
       steps {
-        sh "scp 'target/Calculator.war' jenkinsa@ncidt-d013-v.nci.nih.gov:/home/ubuntu/prod/jboss-as-7.1.1.Final/standalone/deployments"
+        sh "scp 'target/Calculator.war' /home/ubuntu/prod/jboss-as-7.1.1.Final/standalone/deployments"
       }
     }
   }
