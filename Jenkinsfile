@@ -75,7 +75,9 @@ node('slave-pool-1')
   {
     mail bcc: '', body: "${BUILD_URL}", cc: '', from: '', replyTo: '', subject: 'Request deploy to production', to: 'hartmanph@nih.gov'
 //    input message: 'Joe?', submitter: 'joe'
-    input message: 'Waiting for admin to approve', submitter: 'admin'
+    timeout(time: 1, unit: 'MINUTE'){
+      input message: 'Waiting for admin to approve', submitter: 'admin'
+    }
   }
   
   // mark the code deployment 'stage'
